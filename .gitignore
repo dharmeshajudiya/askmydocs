@@ -31,6 +31,12 @@ frontend/.vite/
 .DS_Store
 Thumbs.db
 
+# Java / Maven
+backend/target/
+*.class
+*.jar
+*.war
+
 # IDE
 .vscode/
 .idea/

@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: askmydocs
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/ragdb}
+    username: ${DB_USERNAME:user}
+    password: ${DB_PASSWORD:pass}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      embedding:
+        options:
+          model: text-embedding-3-small
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY}
+      chat:
+        options:
+          model: claude-sonnet-4-6
+          max-tokens: 1024
+          temperature: 0.0
+
+# App-specific settings
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-me-in-production-min-32-chars!!}
+    access-token-expiry-ms: 3600000       # 1 hour
+    refresh-token-expiry-ms: 604800000    # 7 days
+
+  pinecone:
+    api-key: ${PINECONE_API_KEY}
+    index-host: ${PINECONE_INDEX_HOST}    # e.g. https://my-index-xyz.svc.aped-xxx.pinecone.io
+
+  cohere:
+    api-key: ${COHERE_API_KEY}
+
+  s3:
+    bucket: ${S3_BUCKET:rag-documents}
+    endpoint-url: ${S3_ENDPOINT_URL:}     # leave empty for real AWS; set for MinIO
+    region: ${AWS_REGION:us-east-1}
+    access-key: ${AWS_ACCESS_KEY_ID:}
+    secret-key: ${AWS_SECRET_ACCESS_KEY:}
+
+logging:
+  level:
+    com.askmydocs: INFO
+    org.springframework.ai: INFO
