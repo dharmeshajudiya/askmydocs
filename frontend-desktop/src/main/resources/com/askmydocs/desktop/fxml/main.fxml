@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.askmydocs.desktop.controller.MainController"
+            styleClass="root-pane">
+
+    <!-- ── Header ── -->
+    <top>
+        <HBox styleClass="header" alignment="CENTER_LEFT" spacing="12">
+            <Label text="Ask" styleClass="header-title"/>
+            <Label text="My" styleClass="header-title-blue"/>
+            <Label text="Docs" styleClass="header-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="serverLabel" styleClass="server-label"/>
+            <Button text="Sign Out" onAction="#handleLogout" styleClass="logout-btn"/>
+        </HBox>
+    </top>
+
+    <!-- ── Body: sidebar + chat ── -->
+    <center>
+        <SplitPane dividerPositions="0.28" styleClass="main-split">
+
+            <!-- LEFT SIDEBAR -->
+            <VBox styleClass="sidebar" spacing="0" minWidth="240" maxWidth="340">
+
+                <!-- Upload section -->
+                <VBox styleClass="section-header">
+                    <Label text="UPLOAD DOCUMENT" styleClass="section-title"/>
+                </VBox>
+
+                <VBox fx:id="uploadDropZone" styleClass="drop-zone" alignment="CENTER" spacing="8"
+                      onDragOver="#onDragOver" onDragDropped="#onDragDropped"
+                      onMouseClicked="#handlePickFile">
+                    <Label fx:id="uploadIcon"   text="📄" styleClass="drop-icon"/>
+                    <Label fx:id="uploadStatus" text="Drop file or click to browse" styleClass="drop-hint"/>
+                    <Label text="PDF · DOCX · TXT" styleClass="drop-types"/>
+                    <ProgressIndicator fx:id="uploadProgress" styleClass="upload-progress"
+                                       visible="false" managed="false" maxWidth="32"/>
+                </VBox>
+
+                <Separator/>
+
+                <!-- Document list -->
+                <VBox styleClass="section-header">
+                    <Label text="DOCUMENTS" styleClass="section-title"/>
+                </VBox>
+
+                <ListView fx:id="documentList" VBox.vgrow="ALWAYS" styleClass="doc-list"/>
+
+                <Label fx:id="docEmptyLabel" text="No documents yet."
+                       styleClass="empty-label" alignment="CENTER"
+                       visible="false" managed="false"/>
+            </VBox>
+
+            <!-- RIGHT CHAT PANEL -->
+            <VBox VBox.vgrow="ALWAYS" styleClass="chat-panel">
+
+                <!-- Document selected banner -->
+                <HBox styleClass="doc-banner" alignment="CENTER_LEFT" spacing="8">
+                    <Label fx:id="selectedDocLabel"
+                           text="Select a document from the sidebar to start"
+                           styleClass="doc-banner-text"/>
+                </HBox>
+
+                <!-- Messages -->
+                <ScrollPane fx:id="messagesScrollPane" VBox.vgrow="ALWAYS"
+                            fitToWidth="true" styleClass="messages-scroll">
+                    <VBox fx:id="messagesBox" spacing="12" styleClass="messages-box"/>
+                </ScrollPane>
+
+                <!-- Input area -->
+                <HBox styleClass="input-bar" alignment="BOTTOM_CENTER" spacing="10">
+                    <TextArea fx:id="questionInput"
+                              promptText="Ask a question about this document…"
+                              wrapText="true" prefRowCount="2"
+                              HBox.hgrow="ALWAYS" styleClass="question-input"/>
+                    <Button fx:id="sendBtn" text="Send" onAction="#handleSend"
+                            styleClass="send-btn"/>
+                </HBox>
+                <Label text="Enter to send  ·  Shift+Enter for newline"
+                       styleClass="input-hint"/>
+
+            </VBox>
+        </SplitPane>
+    </center>
+</BorderPane>
